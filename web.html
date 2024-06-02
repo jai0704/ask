@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-start;
+            transition: background-color 0.3s;
+        }
+        .navbar a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #4285F4;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .search-container {
+            text-align: center;
+            margin-top: 80px;
+        }
+        .search-box {
+            width: 500px;
+            max-width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #357AE8;
+        }
+        .search-history {
+            margin-top: 20px;
+            width: 500px;
+            max-width: 90%;
+            text-align: left;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        .footer a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #4285F4;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .dark-mode {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            background-color: #4285F4;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .dark-mode:hover {
+            background-color: #357AE8;
+        }
+        .dark {
+            background-color: #333;
+            color: #f5f5f5;
+        }
+        .dark .navbar,
+        .dark .footer {
+            background-color: #444;
+            border-color: #555;
+        }
+        .dark .navbar a,
+        .dark .footer a {
+            color: #9ab;
+        }
+        .dark .search-box {
+            border-color: #666;
+            background-color: #555;
+            color: #f5f5f5;
+        }
+        .dark .search-button {
+            background-color: #666;
+        }
+        .dark .search-button:hover {
+            background-color: #555;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">All</a>
+        <a href="https://www.google.com/imghp" target="_blank">Images</a>
+        <a href="#">Settings</a>
+    </div>
+    <button class="dark-mode" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="search-container">
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1>ASK</h1>
+        <form action="https://www.google.com/search" method="get" onsubmit="saveSearch()">
+            <input type="text" name="q" class="search-box" placeholder="Search..." id="search-input">
+            <br>
+            <input type="submit" value="Search" class="search-button">
+        </form>
+        <div class="search-history" id="search-history">
+            <h3>Search History:</h3>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">About</a>
+    </div>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+        }
+
+        function saveSearch() {
+            const query = document.getElementById('search-input').value;
+            if (query) {
+                let searches = localStorage.getItem('searchHistory');
+                if (searches) {
+                    searches = JSON.parse(searches);
+                } else {
+                    searches = [];
+                }
+                searches.push(query);
+                localStorage.setItem('searchHistory', JSON.stringify(searches));
+                displaySearchHistory();
+            }
+        }
+
+        function displaySearchHistory() {
+            const historyList = document.getElementById('history-list');
+            let searches = localStorage.getItem('searchHistory');
+            if (searches) {
+                searches = JSON.parse(searches);
+                historyList.innerHTML = '';
+                searches.forEach(search => {
+                    const li = document.createElement('li');
+                    li.textContent = search;
+                    historyList.appendChild(li);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', displaySearchHistory);
+    </script>
+</body>
+</html>
